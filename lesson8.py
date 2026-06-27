@@ -25,6 +25,9 @@ for file in image_files:
 mean_width = mean_width//num_of_images
 mean_height = mean_height//num_of_images
 
+mean_width = mean_width//2
+mean_height = mean_height // 2
+
 print("Average Width: ", mean_width)
 print("Average Height: ", mean_height)
 
@@ -32,9 +35,9 @@ for file in image_files:
     img = Image.open(os.path.join(path, file))
     width, height = img.size
 
-img.Resized = img.resize((mean_width, mean_height), Image.LANCZOS)
-img.Resized.save(file, 'JPEG', quality=95)
-print(file, "is resized.")
+    img.Resized = img.resize((mean_width, mean_height), Image.LANCZOS)
+    img.Resized.save(file, 'JPEG', quality=95)
+    print(file, "is resized.")
 
 video_name = "taehyungdnaera.avi"
 
