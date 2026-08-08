@@ -45,25 +45,30 @@ for file in image_files:
 
 video_name = "bts_through_the_years.mp4"
 
-frame = cv2.imread(image_files[0])
-height, width, layers = frame.shape #layers = colour channels
+# frame = cv2.imread(image_files[0])
+# height, width, layers = frame.shape #layers = colour channels
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v') #encoding video
 
-video = cv2.VideoWriter(video_name, fourcc, 1, (width, height)) #1 frame a second
+video = cv2.VideoWriter(video_name, fourcc, 1, (mean_width, mean_height)) #1 frame a second
 
 if not video.isOpened():
-    print("Video writer failed.")
+    print("Video Writer Failed.")
     exit()
 
 for i, image in enumerate(image_files):
     frame = cv2.imread(os.path.join(path, image))
+    if frame is None:
+        print("Could not read: ", image)
+        continue
     frame = cv2.resize(frame, (mean_width, mean_height))
 
     if i ==0 :
         cv2.putText(frame, "BTS", (170, 180), cv2.FONT_HERSHEY_COMPLEX, 3, (255, 255, 255), 6, cv2.LINE_AA)
 
-        cv2.putText(frame, "Through The Years", (60, 260), cv2.FONT_HERSHEY_COMPLEX, 1.4, (220, 220, 220), 3, cv2.LINE_AA)
+        cv2.putText(frame, "Through The Years", (40, 260), cv2.FONT_HERSHEY_COMPLEX, 1, (220, 220, 220), 2, cv2.LINE_AA)
+
+    video.write(frame)
 
 video.release()
 
@@ -72,6 +77,10 @@ cv2.destroyAllWindows()
 print("Video created successfully!!")
 
 cap = cv2.VideoCapture(video_name)
+
+if not cap.isOpened():
+    print("Unable to open video")
+    exit()
 
 while True:
     ret, frame = cap.read()
